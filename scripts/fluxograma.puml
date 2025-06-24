@@ -1,0 +1,27 @@
+@startuml
+start
+:Exibe Menu;
+:Usuário escolhe opção;
+if (Depositar?) then (Sim)
+  :Solicita valor;
+  if (Valor válido?) then (Sim)
+    :Atualiza saldo e extrato;
+  else (Não)
+    :Mensagem de erro;
+  endif
+elseif (Sacar?) then (Sim)
+  :Solicita valor;
+  if (Limites OK e saldo suficiente?) then (Sim)
+    :Atualiza saldo, extrato e saques;
+  else (Não)
+    :Mensagem de erro;
+  endif
+elseif (Extrato?) then (Sim)
+  :Exibe extrato;
+elseif (Sair?) then (Sim)
+  stop
+else (Não)
+  :Mensagem de opção inválida;
+endif
+:Volta ao menu;
+@enduml
