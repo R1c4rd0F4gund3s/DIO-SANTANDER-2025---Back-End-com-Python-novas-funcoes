@@ -20,3 +20,28 @@ Este é o protótipo da primeira versão de um novo sistema bancário desenvolvi
 
 ## Estrutura do Projeto
 ![Fluxograma](https://github.com/R1c4rd0F4gund3s/DIO-SANTANDER-2025---Back-End-com-Python/blob/main/images/fluxograma_sistema_bancario.png)
+
+
+## Como Executar
+
+1. Clone este repositório:
+
+   ```bash
+   git clone https://github.com/R1c4rd0F4gund3s/sistema_bancario.git
+
+2. Navegue até o diretório do projeto
+    
+   cd sistema_bancario
+ 
+3. python src/sistema_bancario.py
+
+------------
+
+Próximos Passos (Desenvolvimento Futuro)- Persistência de dados (banco de dados, arquivos).
+
+- Gerenciamento de múltiplos usuários e contas.
+- Funcionalidades adicionais (transferência, investimento, etc.).
+- Interface gráfica de usuário (GUI).
+
+------------
+ContribuiçãoContribuições são bem-vindas! Por favor, abra uma issue ou envie um pull request.
