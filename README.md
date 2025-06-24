@@ -44,4 +44,4 @@ Próximos Passos (Desenvolvimento Futuro)- Persistência de dados (banco de dado
 - Interface gráfica de usuário (GUI).
 
 ------------
-ContribuiçãoContribuições são bem-vindas! Por favor, abra uma issue ou envie um pull request.
+Contribuição Contribuições são bem-vindas! Por favor, abra uma issue ou envie um pull request.
