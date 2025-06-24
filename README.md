@@ -19,3 +19,4 @@ Este é o protótipo da primeira versão de um novo sistema bancário desenvolvi
   - Formatação de valores monetários no padrão `R$ xxx.xx`.
 
 ## Estrutura do Projeto
+![Fluxograma](https://github.com/R1c4rd0F4gund3s/DIO-SANTANDER-2025---Back-End-com-Python/blob/main/images/fluxograma_sistema_bancario.png)
