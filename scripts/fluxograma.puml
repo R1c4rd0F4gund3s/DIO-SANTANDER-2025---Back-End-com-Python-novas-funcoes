@@ -1,40 +1,53 @@
 @startuml
 start
-:Exibe Menu;
-:Usuário escolhe opção;
-if (Depositar?) then (Sim)
-  :Seleciona conta;
-  :Solicita valor;
-  if (Valor válido?) then (Sim)
-    :Atualiza saldo e extrato;
-    :Exibe saldo e últimas movimentações;
+:Exibe tela de Login;
+:Usuário informa agência, conta e senha;
+if (Conta e senha válidos?) then (Sim)
+  :Acesso permitido;
+  :Exibe Menu;
+  :Usuário escolhe opção;
+  if (Depositar?) then (Sim)
+    :Solicita valor;
+    if (Valor válido?) then (Sim)
+      :Atualiza saldo e extrato;
+      :Exibe saldo e últimas movimentações;
+    else (Não)
+      :Mensagem de erro;
+    endif
+  elseif (Sacar?) then (Sim)
+    :Solicita valor;
+    if (Limites OK e saldo suficiente?) then (Sim)
+      :Atualiza saldo, extrato e saques;
+      :Exibe número de saques, saldo e extrato;
+    else (Não)
+      :Mensagem de erro;
+    endif
+  elseif (Extrato?) then (Sim)
+    :Exibe extrato;
+  elseif (Sair?) then (Sim)
+    stop
   else (Não)
-    :Mensagem de erro;
+    :Mensagem de opção inválida;
   endif
-elseif (Sacar?) then (Sim)
-  :Seleciona conta;
-  :Solicita valor;
-  if (Limites OK e saldo suficiente?) then (Sim)
-    :Atualiza saldo, extrato e saques;
-    :Exibe número de saques, saldo e extrato;
-  else (Não)
-    :Mensagem de erro;
-  endif
-elseif (Extrato?) then (Sim)
-  :Seleciona conta;
-  :Exibe extrato;
-elseif (Novo Usuário?) then (Sim)
-  :Solicita dados do usuário;
-  :Verifica CPF único;
-  :Cadastra usuário;
-elseif (Nova Conta Corrente?) then (Sim)
-  :Solicita CPF do usuário;
-  :Verifica usuário existente;
-  :Cria conta corrente;
-elseif (Sair?) then (Sim)
-  stop
+  :Volta ao menu;
 else (Não)
-  :Mensagem de opção inválida;
+  :Mensagem de erro;
+  :Pergunta se deseja se cadastrar;
+  if (Deseja cadastrar?) then (Sim)
+    :Solicita dados do usuário;
+    :Valida dados (data e CPF);
+    :Confirma dados com usuário;
+    if (Dados corretos?) then (Sim)
+      :Cadastra usuário;
+      :Cria conta corrente automaticamente;
+      :Informa agência e conta ao usuário;
+      :Volta ao login;
+    else (Não)
+      :Permite alteração dos dados;
+      :Repete validação;
+    endif
+  else (Não)
+    :Volta ao login;
+  endif
 endif
-:Volta ao menu;
 @enduml
