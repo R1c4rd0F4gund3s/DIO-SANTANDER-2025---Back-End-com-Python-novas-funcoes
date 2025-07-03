@@ -1,20 +1,17 @@
 import getpass
 from datetime import datetime
 
-# Define o limite de saques diários e o valor máximo permitido por saque
+# Limites e constantes do sistema
 LIMITE_SAQUES_DIARIOS = 3
 LIMITE_VALOR_SAQUE = 500.0
-AGENCIA_PADRAO = "0001"  # Número fixo da agência
+AGENCIA_PADRAO = "0001"
 
-# Listas globais para armazenar usuários e contas
+# Estruturas globais
 usuarios = []
 contas = []
 
 def formatar_data(data_str):
-    """
-    Recebe uma string no formato DD/MM/AAAA e retorna uma data formatada.
-    Se inválida, solicita novamente.
-    """
+    """Converte string DD/MM/AAAA em datetime, pedindo novamente se inválida."""
     while True:
         try:
             data = datetime.strptime(data_str, "%d/%m/%Y")
@@ -23,23 +20,16 @@ def formatar_data(data_str):
             data_str = input("Data inválida! Digite novamente (DD/MM/AAAA): ").strip()
 
 def formatar_data_str(data):
-    """
-    Recebe um objeto datetime e retorna string no formato DD/MM/AAAA.
-    """
+    """Converte datetime para string DD/MM/AAAA."""
     return data.strftime("%d/%m/%Y")
 
 def formatar_cpf(cpf):
-    """
-    Formata o CPF para o padrão XXX.XXX.XXX-XX.
-    """
+    """Formata o CPF para XXX.XXX.XXX-XX."""
     cpf_numeros = ''.join(filter(str.isdigit, cpf)).zfill(11)
     return f"{cpf_numeros[:3]}.{cpf_numeros[3:6]}.{cpf_numeros[6:9]}-{cpf_numeros[9:]}"
 
 def validar_dados_usuario(dados):
-    """
-    Exibe os dados informados e pede confirmação ao usuário.
-    Permite alteração caso o usuário informe que estão incorretos.
-    """
+    """Exibe dados e permite confirmação/correção pelo usuário."""
     while True:
         print("\nConfira os dados informados:")
         print(f"Nome: {dados['nome']}")
@@ -64,12 +54,7 @@ def validar_dados_usuario(dados):
             print("Opção inválida. Digite S para sim ou N para não.")
 
 def criar_usuario():
-    """
-    Cria um novo usuário (cliente do banco), incluindo senha.
-    Solicita nome, data de nascimento, CPF, endereço e senha.
-    Garante que o CPF seja único entre os usuários.
-    Valida os dados antes de cadastrar.
-    """
+    """Cria novo usuário, valida dados e adiciona senha."""
     print("\n=== Cadastro de Usuário ===")
     while True:
         cpf = input("CPF (XXX.XXX.XXX-XX): ").strip()
@@ -100,10 +85,7 @@ def criar_usuario():
     return dados
 
 def criar_conta_corrente(usuario):
-    """
-    Cria uma nova conta corrente vinculada a um usuário existente.
-    O número da conta é exclusivo e a agência é fixa.
-    """
+    """Cria uma nova conta corrente para o usuário informado."""
     numero_conta = len(contas) + 1
     conta = {
         "agencia": AGENCIA_PADRAO,
@@ -117,10 +99,38 @@ def criar_conta_corrente(usuario):
     print(f"Conta criada com sucesso! Agência: {conta['agencia']} Conta: {conta['numero']}")
     return conta
 
+def menu_cadastro_conta(usuario):
+    """
+    Menu para o usuário após o cadastro, permitindo listar contas, criar nova conta ou sair para tela de login.
+    """
+    while True:
+        print(f"\n=== Menu de Contas para {usuario['nome']} ===")
+        print("[1] Listar Contas")
+        print("[2] Nova Conta")
+        print("[3] Voltar para Login")
+        opcao = input("Escolha uma opção: ").strip()
+        if opcao == "1":
+            print("\n--- Contas cadastradas ---")
+            encontrou = False
+            for conta in contas:
+                if conta["usuario"] == usuario:
+                    encontrou = True
+                    print(f"Agência: {conta['agencia']} | Conta: {conta['numero']}")
+            if not encontrou:
+                print("Nenhuma conta cadastrada para este usuário.")
+        elif opcao == "2":
+            conta = criar_conta_corrente(usuario)
+            print(f"Nova conta criada! Agência: {conta['agencia']} | Conta: {conta['numero']}")
+        elif opcao == "3":
+            print("Voltando para tela de login...")
+            break
+        else:
+            print("Opção inválida. Tente novamente.")
+
 def autenticar_usuario():
     """
     Autentica o usuário pelo número da agência, conta e senha.
-    Se não existir, oferece opção de cadastro.
+    Se não existir, oferece opção de cadastro e menu de contas.
     """
     while True:
         print("\n=== Login no Sistema Bancário ===")
@@ -139,16 +149,14 @@ def autenticar_usuario():
                 if usuario:
                     conta = criar_conta_corrente(usuario)
                     print(f"Seus dados de acesso:\nAgência: {conta['agencia']} | Conta: {conta['numero']}")
-                    return conta
+                    menu_cadastro_conta(usuario)
             elif opc == "N":
                 print("Tente novamente.")
             else:
                 print("Opção inválida.")
 
 def menu_usuario(conta):
-    """
-    Exibe o menu principal para o usuário autenticado.
-    """
+    """Exibe o menu principal para o usuário autenticado."""
     while True:
         menu = f"""
 [1] Depositar
@@ -160,7 +168,6 @@ Agência: {conta['agencia']} | Conta: {conta['numero']} | Titular: {conta['usuar
 CPF: {formatar_cpf(conta['usuario']['cpf'])} | Nascimento: {formatar_data_str(conta['usuario']['nascimento'])}
 => """
         opcao = input(menu)
-
         if opcao == "1":
             try:
                 valor = float(input("Informe o valor do depósito: "))
@@ -183,11 +190,7 @@ CPF: {formatar_cpf(conta['usuario']['cpf'])} | Nascimento: {formatar_data_str(co
             print("Operação inválida, por favor selecione novamente a operação desejada.")
 
 def depositar(conta, valor):
-    """
-    Realiza a operação de depósito, verificando se o valor é válido.
-    Atualiza o saldo e registra o depósito no extrato.
-    Retorna saldo e extrato (resumido se necessário).
-    """
+    """Realiza depósito, atualiza saldo e extrato."""
     if valor <= 0:
         print("\nOperação falhou! O valor informado é inválido.")
         return conta["saldo"], conta["extrato"]
@@ -197,11 +200,7 @@ def depositar(conta, valor):
     return conta["saldo"], conta["extrato"]
 
 def sacar(conta, valor):
-    """
-    Realiza a operação de saque, verificando limites e saldo.
-    Atualiza o saldo, registra o saque no extrato e incrementa o contador de saques diários.
-    Exibe saldo e extrato após o saque.
-    """
+    """Realiza saque, verifica limites e saldo, atualiza extrato."""
     if conta["numero_saques_diarios"] >= LIMITE_SAQUES_DIARIOS:
         print(f"\nOperação falhou! Limite de saques diários atingido ({conta['numero_saques_diarios']}/{LIMITE_SAQUES_DIARIOS}).")
         return
@@ -222,10 +221,7 @@ def sacar(conta, valor):
     exibir_extrato(conta["saldo"], extrato=conta["extrato"])
 
 def exibir_extrato(saldo, *, extrato):
-    """
-    Exibe o extrato de todas as movimentações (depósitos e saques) e o saldo atual.
-    Recebe saldo por posição e extrato como argumento nomeado.
-    """
+    """Exibe o extrato de movimentações e saldo atual."""
     print("\n========== EXTRATO ==========")
     if not extrato:
         print("Não foram realizadas movimentações.")
@@ -236,16 +232,11 @@ def exibir_extrato(saldo, *, extrato):
     print("=============================")
 
 def format_currency(value):
-    """
-    Formata um valor numérico para o padrão monetário brasileiro (R$ xxx,xx).
-    """
+    """Formata valor para padrão monetário brasileiro."""
     return f"R$ {value:.2f}".replace('.', ',')
 
 def main():
-    """
-    Função principal do sistema bancário.
-    Solicita autenticação antes de exibir o menu principal.
-    """
+    """Função principal: autentica e exibe menu principal."""
     while True:
         conta = autenticar_usuario()
         if conta:
@@ -255,6 +246,5 @@ def main():
             print("Obrigado por usar nosso sistema bancário. Volte sempre!")
             break
 
-# Ponto de entrada do programa
 if __name__ == "__main__":
     main()

@@ -24,6 +24,11 @@ if (Conta e senha válidos?) then (Sim)
     endif
   elseif (Extrato?) then (Sim)
     :Exibe extrato;
+  elseif (Listar Contas?) then (Sim)
+    :Exibe todas as contas do usuário;
+  elseif (Nova Conta?) then (Sim)
+    :Cria nova conta corrente para o usuário;
+    :Informa agência e número da nova conta;
   elseif (Sair?) then (Sim)
     stop
   else (Não)
@@ -41,7 +46,10 @@ else (Não)
       :Cadastra usuário;
       :Cria conta corrente automaticamente;
       :Informa agência e conta ao usuário;
-      :Volta ao login;
+      :Exibe menu de contas (Listar/Nova Conta/Voltar);
+      if (Voltar?) then (Sim)
+        :Volta ao login;
+      endif
     else (Não)
       :Permite alteração dos dados;
       :Repete validação;

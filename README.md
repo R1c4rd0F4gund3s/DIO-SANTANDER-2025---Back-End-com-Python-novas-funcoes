@@ -35,10 +35,12 @@ Este é o protótipo da primeira versão de um novo sistema bancário desenvolvi
   - Um usuário pode ter mais de uma conta.
   - **🔗 Ao cadastrar um novo usuário, uma conta corrente é criada automaticamente.**
   - **📢 O sistema informa agência e número da conta ao usuário após o cadastro.**
+  - **🗂️ Novo menu de contas:** Após o cadastro, o usuário pode listar todas as suas contas, criar novas contas ou voltar para a tela de login.
 
 - **🔑 Login Seguro**:
   - O acesso ao sistema é feito informando agência, número da conta e senha.
   - Caso a conta não exista, o sistema oferece a opção de cadastro.
+  - **🔄 Após o cadastro, o usuário pode acessar o menu de contas para gerenciar suas contas antes de voltar ao login.**
 
 - **📝 Validação e Máscaras**:
   - O CPF é sempre apresentado com a máscara `XXX.XXX.XXX-XX`.
@@ -53,31 +55,3 @@ Este é o protótipo da primeira versão de um novo sistema bancário desenvolvi
 
    ```bash
    git clone https://github.com/R1c4rd0F4gund3s/sistema_bancario.git
-   ```
-
-2. Navegue até o diretório do projeto:
-
-   ```bash
-   cd sistema_bancario
-   ```
-
-3. Execute o sistema:
-
-   ```bash
-   python src/sistema_bancario.py
-   ```
-
-------------
-
-## 🛠️ Próximos Passos (Desenvolvimento Futuro)
-
-- 💾 Persistência de dados (banco de dados, arquivos).
-- 👥 Gerenciamento de múltiplos usuários e contas de diferentes tipos (poupança, investimento).
-- 🔄 Funcionalidades adicionais (transferência, investimento, etc.).
-- 🖱️ Interface gráfica de usuário (GUI).
-
-------------
-
-## 🤝 Contribuição
-
-Contribuições são bem-vindas! Por favor, abra uma issue ou envie um pull request
